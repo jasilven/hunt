@@ -9,7 +9,7 @@ use tower_http::services::ServeDir;
 mod rest;
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "example", about = "An example of StructOpt usage.")]
+#[structopt(name = "")]
 struct Opt {
     /// .http file name
     #[structopt(long = "file")]
