@@ -1,0 +1,130 @@
+:root {
+  --nav-width: 200px;
+  --link-color: mediumseagreen;
+  --body-background: #2f2f2f;
+  --body-color: darkgray;
+  --nav-background: #404040;
+  --nav-link: gray;
+  --code-background: #262626;
+  --header-height: 1em;
+}
+
+body {
+  background: var(--body-background);
+  color: var(--body-color);
+  font-family: "Source Code Pro", monospace;
+  font-size: 15px;
+  margin: 0;
+}
+
+.topnav {
+  white-space: nowrap;
+  cursor: default;
+  background: black;
+  padding-left: 10px;
+  overflow: hidden;
+}
+
+.topnav a {
+  text-decoration: none;
+  color: var(--body-color);
+}
+
+.topnav a:hover,
+.topnav a:focus {
+  color: var(--link-color);
+}
+
+h1 {
+  font-size: 1.2em;
+}
+
+h2 {
+  font-size: 1em;
+}
+
+code {
+  font-size: 0.8em;
+  font-family: "Source Code Pro", monospace;
+  position: relative;
+  display: inline-block;
+  padding: 5px 5px;
+  background: var(--code-background);
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--nav-background);
+  border-radius: 5px;
+}
+
+.nav {
+  float: left;
+  background: var(--nav-background);
+  width: var(--nav-width);
+  height: 100cap;
+  font-size: 0.8em;
+}
+
+.nav__link {
+  display: block;
+  padding: 12px 18px;
+  text-decoration: none;
+  font-weight: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--nav-link);
+}
+
+.nav__link__selected {
+  display: block;
+  padding: 12px 18px;
+  text-decoration: none;
+  font-weight: 500;
+  background: var(--body-background);
+  color: var(--body-color);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.nav__link:hover {
+  background: #3a3a3a;
+}
+
+.content__with__nav {
+  margin: 0 0 0 var(--nav-width);
+  padding: 0px 15px;
+}
+
+.link {
+  color: var(--link-color);
+  display: inline-block;
+  margin: 0px 0px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.link:hover {
+  background: var(--link-color);
+  font-weight: bold;
+  color: var(--body-background);
+}
+
+
+.loader {
+  margin-top: 50px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

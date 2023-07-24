@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- left menu -->
+<nav class="nav">
+  {% for request in requests %}
+
+    {% if selected is defined and loop.index0 == selected %}
+      <a class="nav__link__selected" href="/{{loop.index0}}">{{request.url}}</a>
+    {% else %}
+      <a class="nav__link" href="/{{loop.index0}}">{{request.url}}</a>
+    {% endif %}
+
+  {% endfor %}
+</nav>
+
+{% if selected is defined %}
+  <div class="content__with__nav">
+    {% set request = requests | nth(n=selected) %}
+
+    <!-- request URL -->
+    <h1>Request </h1>
+    <code>{{request.url}}</code>
+    <a class="link" href="/{{selected}}/response">[{{request.method}}]</a>
+
+    <!-- request headers -->
+    {% if request.headers %}
+      <h2>Headers</h2>
+      <code>
+      {% for key, value in request.headers -%}
+        {{key}}: {{value}}<br/>
+      {% endfor -%}
+      </code>
+    {% endif %}
+
+    <!-- request body -->
+    {% if request.body -%}
+      <h2>Body</h2>
+      <pre><code>{{request.body}}</code></pre>
+    {% endif -%}
+
+    <!-- response -->
+    {% if response is defined %}
+      <h1>Response <em>({{ response.elapsed_ms }}ms)</em></h1>
+      <code>
+      {{response.status}} {{response.version}}<br/></br>
+      {% for key, value in response.headers -%}
+        {{key}}: {{value}}<br/>
+      {% endfor -%}
+      <pre>{{response.body}}</pre>
+      </code>
+    {% endif %}
+
+  </div>
+{% endif %}
+
+{% endblock content %}
