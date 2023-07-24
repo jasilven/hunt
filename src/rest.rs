@@ -35,7 +35,7 @@ pub(crate) async fn index(
         ctx.insert("selected", &selected);
     }
     let html = state.tera.render("index.html", &ctx).map_err(|e| {
-        tracing::error!("failed to render index.html: {}", e);
+        tracing::error!("failed to render index page: {}", e);
         StatusCode::INTERNAL_SERVER_ERROR
     })?;
 
@@ -48,23 +48,22 @@ pub(crate) async fn response(
 ) -> Result<Html<String>, StatusCode> {
     // parse rest file and fetch response
     let rest_file = parse_rest_file(&state.opt.file).await?;
-    let response = &rest_file.requests[selected]
-        .get_response()
-        .await
-        .map_err(|e| {
-            tracing::error!("failed to render index.html: {}", e);
-            StatusCode::INTERNAL_SERVER_ERROR
-        })?;
-
-    // render response
-    tracing::info!("rendering response");
 
     let mut ctx = Context::new();
-    ctx.insert("selected", &selected);
     ctx.insert("requests", &rest_file.requests);
-    ctx.insert("response", &response);
+    ctx.insert("selected", &selected);
+
+    match rest_file.requests[selected].get_response().await {
+        Ok(response) => {
+            ctx.insert("response", &response);
+        }
+        Err(e) => {
+            tracing::error!("failed to get response: {}", &e);
+            ctx.insert("err", e.to_string().as_str())
+        }
+    }
     let html = state.tera.render("index.html", &ctx).map_err(|e| {
-        tracing::error!("failed to render index.html: {}", e);
+        tracing::error!("failed to render response: {}", e);
         StatusCode::INTERNAL_SERVER_ERROR
     })?;
 
