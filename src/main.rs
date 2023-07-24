@@ -1,10 +1,11 @@
 use std::{net::SocketAddr, sync::Arc};
 
+use axum::http::HeaderMap;
+use axum::response::IntoResponse;
 use axum::{routing::get, Router};
 
 use structopt::StructOpt;
 use tera::Tera;
-use tower_http::services::ServeDir;
 
 mod rest;
 
@@ -39,8 +40,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/", get(rest::index))
         .route("/:index", get(rest::index))
         .route("/:index/response", get(rest::response))
-        .with_state(state)
-        .nest_service("/static", ServeDir::new("static"));
+        .route("/static/style.css", get(style_css))
+        .with_state(state);
 
     // Bind to port and start server
     let addr = SocketAddr::from(([127, 0, 0, 1], 3030));
@@ -53,4 +54,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .unwrap();
 
     Ok(())
+}
+
+async fn style_css() -> impl IntoResponse {
+    let mut headers = HeaderMap::new();
+    headers.insert("content-type", "text/css".parse().unwrap());
+    (headers, include_str!("../static/style.css"))
 }
